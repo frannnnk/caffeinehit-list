@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+	<title></title>
+
+	<link href="lib/ionic/css/ionic.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+
+	<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+	<link href="css/ionic.app.css" rel="stylesheet">
+	-->
+
+	<!-- ionic/angularjs js -->
+	<script src="lib/ionic/js/ionic.bundle.js"></script>
+
+	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
+	<!-- cordova script (this will be a 404 during development) -->
+	<script src="cordova.js"></script>
+
+	<!-- your apps js -->
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/filters.js"></script>
+</head>
+<body ng-app="caffeinehit">
+
+<ion-pane ng-controller="YelpController">
+	<ion-header-bar class="bar-stable">
+		<h1 class="title">
+			<img src="img/coffee-bean-icon.png">
+			<span>CaffeineHit</span>
+		</h1>
+	</ion-header-bar>
+	<ion-content>
+		<ion-list can-swipe="true">
+
+			<ion-refresher pulling-text="Reload..." on-refresh="doRefresh()"></ion-refresher>
+
+			<ion-item ng-repeat="cafe in yelp.results" ng-click="openMap(cafe)" class="item-thumbnail-left">
+				<img ng-src="{{cafe.image_url}}">
+				<h2>{{cafe.name}}</h2>
+
+				<p>
+					<span>
+						<i class="ion ion-ios-navigate"></i>
+						{{cafe.distance | number:&quot;0&quot;}}m</span>
+				</p>
+				<p>
+					<i class="ion ion-ios-location"></i>
+					{{cafe.location.display_address | join:&quot;, &quot; }}
+				</p>
+				<p>
+					<span>
+						<i class="ion ion-star"></i>
+						{{cafe.rating}}</span>
+					<span>
+						<i class="ion ion-person"></i>
+						{{cafe.review_count}}</span>
+				</p>
+
+				<ion-option-button ng-click="getDirections(cafe)" class="button-positive">
+					<i class="ion ion-map"></i>&#xA0;Get Direction
+				</ion-option-button>
+
+
+
+			</ion-item>
+		</ion-list>
+		<ion-infinite-scroll ng-if="yelp.hasMore" immediate-check="false" on-infinite="loadMore()"></ion-infinite-scroll>
+
+
+	</ion-content>
+</ion-pane>
+</body>
+</html>
